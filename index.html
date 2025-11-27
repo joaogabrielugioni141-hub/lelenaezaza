@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lelena e Zaza :3</title>
+<link rel="icon" type="image/png" href="icon.png">
+
+<style>
+  body {
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+  }
+
+  h1 {
+    margin-top: 20px;
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+    flex-direction: column;
+  }
+
+  .players {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .player {
+    margin: 0 50px;
+  }
+
+  .player img {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+  }
+
+  .score {
+    font-size: 80px;
+    font-weight: bold;
+  }
+
+  .details-button {
+    background-color: #222;
+    color: white;
+    border: 1px solid #555;
+    padding: 12px 25px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .details-button:hover {
+    background-color: #333;
+    border-color: #888;
+  }
+</style>
+</head>
+<body>
+
+<h1>QUEM AMA MAIS QUEM? (se eh q vc me entende)</h1>
+
+<div class="container">
+  <div class="players">
+    <div class="player">
+      <img src="avatar1.png" alt="Player 1">
+      <h2>ren</h2>
+    </div>
+
+    <div>
+      <div class="score" id="score">0 - 0</div>
+    </div>
+
+    <div class="player">
+      <img src="avatar2.png" alt="Player 2">
+      <h2>3dente</h2>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHEET_ID = "10z-1XPB7jMrKn8MklEjqsF9WV91o5y5Mrz94IV2C9oY";
+const RANGE = "A:A"; 
+const API_KEY = "AIzaSyAIUhWzBSEcnrj-FqLwEsFRQPECE3EEUaY";
+
+async function fetchData() {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${RANGE}?key=${API_KEY}`;
+  
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Erro na requisição à API");
+    
+    const data = await res.json();
+    const values = data.values ? data.values.flat().map(v => v.toLowerCase().trim()) : [];
+    
+    let ren = 0, tres = 0;
+
+    values.forEach(v => {
+      if (v === "poc") ren++;
+      else if (v === "tres" || v === "zaza") tres++;
+    });
+
+    document.getElementById("score").textContent = `${ren} - ${tres}`;
+  } catch (err) {
+    console.error("Erro ao buscar dados:", err);
+  }
+}
+
+fetchData();
+setInterval(fetchData, 10000);
+</script>
+
+</body>
+</html>
